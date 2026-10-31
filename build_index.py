@@ -36,13 +36,33 @@ DEFAULT_CONFIG = {
     "titles_csv": "titles.csv",    # optional: file_stem,title  to restore real titles ("S.H.I.E.L.D.")
 }
 
+# how search turns retrieved chunks into an answer; every option can be switched in config.json
+DEFAULT_SEARCH = {
+    "k": 20,                       # chunks that get a vote
+    "scoring": "linear",           # linear: sum(sim * w)   exp: sum(exp(sim / T) * w)
+    "temperature": 0.05,           # T for exp scoring
+    "confidence": "top_score",     # top_score (best chunk score of the winner) | top_sim | share
+    "threshold": None,             # confidence below this -> "no match"
+    "hybrid": False,               # BM25 + dense, fused with Reciprocal Rank Fusion
+    "dense_depth": 50,             # dense candidates fed to fusion / reranking
+    "bm25_depth": 50,
+    "rrf_k": 60,
+    "bm25_k1": 1.5, "bm25_b": 0.75, "bm25_epsilon": 0.25,   # rank_bm25.BM25Okapi defaults
+    "rerank": False,               # rescore candidates with a cross-encoder
+    "rerank_model": "BAAI/bge-reranker-base",
+    "rerank_depth": 50,
+}
+NO_MATCH = "no match"
+
 
 # ------------------------------------------------------------------ config
-def load_config():
-    if not CONFIG_PATH.exists():
-        CONFIG_PATH.write_text(json.dumps(DEFAULT_CONFIG, indent=2))
-        print(f"Created {CONFIG_PATH.name} with defaults.")
-    cfg = {**DEFAULT_CONFIG, **json.loads(CONFIG_PATH.read_text())}
+def load_config(path=CONFIG_PATH):
+    path = Path(path)
+    if not path.exists():
+        path.write_text(json.dumps(DEFAULT_CONFIG, indent=2))
+        print(f"Created {path.name} with defaults.")
+    cfg = {**DEFAULT_CONFIG, **json.loads(path.read_text())}
+    cfg["search"] = {**DEFAULT_SEARCH, **cfg.get("search", {})}
     return cfg
 
 
@@ -74,6 +94,13 @@ def parse_name(stem, title_map):
         "season": int(m.group("s")) if m.group("s") else None,
         "episode": int(m.group("e")) if m.group("e") else None,
     }
+
+
+def title_label(title, season, episode):
+    """The answer string search returns: 'Iron Man (2008)' or 'Loki (2021) S01E03'."""
+    if season is not None and pd.notna(season):
+        return f"{title} S{int(season):02d}E{int(episode):02d}"
+    return title
 
 
 def load_title_map(cfg):
@@ -256,17 +283,18 @@ class Embedder:
             self.model = None
         else:
             from sentence_transformers import SentenceTransformer
-            self.model = SentenceTransformer(name)
+            local = ROOT / name                       # fine-tuned models live inside the project
+            self.model = SentenceTransformer(str(local) if local.exists() else name)
             self.dim = self.model.get_sentence_embedding_dimension()
 
-    def encode(self, texts, batch_size=64):
+    def encode(self, texts, batch_size=64, progress=True):
         if self.model is None:
             out = np.zeros((len(texts), self.dim), np.float32)
             for i, t in enumerate(texts):
                 for w in norm(t):
                     out[i, hash(w) % self.dim] += 1
             return normalize(out)
-        v = self.model.encode(texts, batch_size=batch_size, show_progress_bar=True,
+        v = self.model.encode(texts, batch_size=batch_size, show_progress_bar=progress,
                               convert_to_numpy=True, normalize_embeddings=True)
         return v.astype(np.float32)
 
@@ -326,12 +354,9 @@ def file_sha1(p):
     return hashlib.sha1(p.read_bytes()).hexdigest()
 
 
-def build(cfg):
+def load_docs(cfg, verbose=True):
+    """Every subtitle file, cleaned and with recaps removed: exactly the text that gets chunked."""
     title_map = load_title_map(cfg)
-    manifest_p = ROOT / cfg["work_dir"] / "manifest.json"
-    manifest_p.parent.mkdir(parents=True, exist_ok=True)
-    old_manifest = json.loads(manifest_p.read_text()) if manifest_p.exists() else {}
-
     docs, skipped, manifest = [], [], {}
     for src in cfg["sources"]:
         folder = (ROOT / src["folder"]).resolve()
@@ -345,13 +370,22 @@ def build(cfg):
             raw = p.read_text(encoding="utf-8", errors="ignore")
             docs.append({**meta, "franchise": src["franchise"], "source_file": p.name,
                          "file_hash": h, "text": clean_text(raw)})
+    removed = remove_recaps(docs, cfg)
+    if verbose:
+        print(f"Recaps: removed {removed} words of repeated 'previously on' dialogue")
+    return docs, manifest, skipped
+
+
+def build(cfg):
+    manifest_p = ROOT / cfg["work_dir"] / "manifest.json"
+    manifest_p.parent.mkdir(parents=True, exist_ok=True)
+    old_manifest = json.loads(manifest_p.read_text()) if manifest_p.exists() else {}
+
+    docs, manifest, skipped = load_docs(cfg)
     new_files = [f for f, h in manifest.items() if old_manifest.get(f) != h]
     gone = [f for f in old_manifest if f not in manifest]
     print(f"Files: {len(docs)} subtitle files, {len(new_files)} new/changed, {len(gone)} removed"
           + (f", {len(skipped)} ignored (name not recognised)" if skipped else ""))
-
-    removed = remove_recaps(docs, cfg)
-    print(f"Recaps: removed {removed} words of repeated 'previously on' dialogue")
 
     df = make_chunks(docs, cfg)
     df = add_vote_weights(df, cfg)
@@ -374,36 +408,189 @@ def build(cfg):
     print(f"Index: {kind}, {len(df)} vectors x {vectors.shape[1]} dims -> {out}")
 
 
+# ------------------------------------------------------------------ BM25 (sparse)
+class BM25Index:
+    """rank_bm25.BM25Okapi (same formula, same defaults) stored as a sparse docs x terms matrix,
+    so scoring 100k+ chunks is one sparse product instead of a Python loop per query term."""
+
+    def __init__(self, texts, k1=1.5, b=0.75, epsilon=0.25):
+        from sklearn.feature_extraction.text import CountVectorizer
+        self.vec = CountVectorizer(tokenizer=norm, lowercase=False, token_pattern=None)
+        tf = self.vec.fit_transform(texts).tocsr().astype(np.float32)
+        n_docs = tf.shape[0]
+        dl = np.asarray(tf.sum(1)).ravel()
+        n_t = np.bincount(tf.indices, minlength=tf.shape[1])          # docs containing each term
+        idf = np.log(n_docs - n_t + 0.5) - np.log(n_t + 0.5)
+        idf[idf < 0] = epsilon * idf.mean()
+        rows = np.repeat(np.arange(n_docs), np.diff(tf.indptr))
+        f = tf.data
+        tf.data = (idf[tf.indices] * f * (k1 + 1)
+                   / (f + k1 * (1 - b + b * dl[rows] / dl.mean()))).astype(np.float32)
+        self.weights_t = tf.T.tocsr()                                  # terms x docs
+
+    def scores(self, queries):
+        return self.vec.transform(queries).astype(np.float32) @ self.weights_t   # sparse q x docs
+
+    def top(self, queries, depth, batch=256):
+        out = []
+        for a in range(0, len(queries), batch):
+            s = self.scores(queries[a:a + batch]).tocsr()
+            for r in range(s.shape[0]):
+                lo, hi = s.indptr[r], s.indptr[r + 1]
+                ids, vals = s.indices[lo:hi], s.data[lo:hi]
+                if len(vals) > depth:
+                    p = np.argpartition(-vals, depth)[:depth]
+                    ids, vals = ids[p], vals[p]
+                out.append(ids[np.argsort(-vals, kind="stable")].astype(np.int64))
+        return out
+
+
 # ------------------------------------------------------------------ search (voting)
-def search(cfg, query, k=20, top=5, franchise=None):
-    import faiss
-    out = index_dir(cfg)
-    index = faiss.read_index(str(out / "index.faiss"))
-    df = pd.read_parquet(out / "chunks.parquet")
-    q = Embedder(cfg["model"]).encode([query])
-    sims, ids = index.search(q, k if franchise is None else min(len(df), k * 10))
-    scores, best = defaultdict(float), {}
-    hits = 0
-    for s, i in zip(sims[0], ids[0]):
-        if i < 0:
-            continue
-        r = df.iloc[i]
-        if franchise and r["franchise"] != franchise:
-            continue
-        hits += 1
-        key = (r["title"], r["season"], r["episode"])
-        scores[key] += float(s) * float(r["vote_weight"])
-        if key not in best or s > best[key][0]:
-            best[key] = (float(s), r["text"], r["position"])
-        if hits >= k:
-            break
-    ranked = sorted(scores.items(), key=lambda x: -x[1])[:top]
+class Searcher:
+    """Loads one index once and answers batches of queries (used by the CLI and evaluate.py).
+
+    candidates(): dense FAISS top-k, optionally fused with BM25 (RRF) and/or reranked
+    decide():     votes chunks into titles, then applies the confidence threshold
+    """
+
+    def __init__(self, cfg):
+        import faiss
+        self.cfg, self.s = cfg, cfg["search"]
+        out = index_dir(cfg)
+        self.index = faiss.read_index(str(out / "index.faiss"))
+        self.df = pd.read_parquet(out / "chunks.parquet")
+        self.labels = np.array([title_label(t, s, e) for t, s, e in
+                                zip(self.df["title"], self.df["season"], self.df["episode"])])
+        self.weights = self.df["vote_weight"].to_numpy(np.float64)
+        self.embedder = Embedder(cfg["model"])
+        self._bm25 = self._reranker = None
+        self._rerank_cache = None
+
+    # ---- retrieval
+    def candidates(self, queries, franchise=None):
+        """Per query: (chunk_ids, chunk_scores, dense_sims), best first, at most k long."""
+        s, queries = self.s, list(queries)
+        q = self.embedder.encode(queries, self.cfg["embed_batch_size"], progress=len(queries) > 500)
+        depth = s["k"]
+        if s["hybrid"] or s["rerank"]:
+            depth = max(depth, s["dense_depth"], s["rerank_depth"] if s["rerank"] else 0)
+        if franchise:
+            depth = min(len(self.df), depth * 10)
+        sims, ids = self.index.search(q, depth)
+        bm = self._bm25_index().top(queries, s["bm25_depth"]) if s["hybrid"] else None
+        fr = self.df["franchise"].to_numpy() if franchise else None
+        out = []
+        for qi in range(len(queries)):
+            keep = ids[qi] >= 0
+            if franchise:
+                keep &= fr[np.clip(ids[qi], 0, None)] == franchise
+            cid, sim = ids[qi][keep], sims[qi][keep].astype(np.float64)
+            if s["hybrid"]:
+                fused = defaultdict(float)
+                for ranked in (cid[:s["dense_depth"]], bm[qi]):
+                    for r, i in enumerate(ranked):
+                        fused[int(i)] += 1.0 / (s["rrf_k"] + r + 1)
+                order = sorted(fused, key=lambda i: -fused[i])
+                if franchise:
+                    order = [i for i in order if fr[i] == franchise]
+                cid = np.array(order, dtype=np.int64)
+                score = np.array([fused[i] for i in order])
+                sim = self._dense_sims(q[qi], cid)
+            else:
+                score = sim
+            out.append((cid, score, sim))
+        if s["rerank"]:
+            out = self._rerank(queries, out)
+        return [(c[:s["k"]], sc[:s["k"]], d[:s["k"]]) for c, sc, d in out]
+
+    def _dense_sims(self, qv, cid):
+        if len(cid) == 0:
+            return np.zeros(0)
+        return (self.index.reconstruct_batch(cid) @ qv).astype(np.float64)
+
+    def _bm25_index(self):
+        if self._bm25 is None:
+            s = self.s
+            self._bm25 = BM25Index(self.df["text"].tolist(), s["bm25_k1"], s["bm25_b"],
+                                   s["bm25_epsilon"])
+        return self._bm25
+
+    def _rerank(self, queries, cands):
+        import pickle
+        from sentence_transformers import CrossEncoder
+        s = self.s
+        cache_p = ROOT / self.cfg["work_dir"] / "rerank_cache" / f"{model_slug(s['rerank_model'])}.pkl"
+        if self._rerank_cache is None:
+            self._rerank_cache = pickle.loads(cache_p.read_bytes()) if cache_p.exists() else {}
+        cache, hashes, texts = self._rerank_cache, self.df["text_hash"].to_numpy(), self.df["text"]
+        cut = [(c[:s["rerank_depth"]], d[:s["rerank_depth"]]) for c, _, d in cands]
+        todo = {(q, hashes[i]): (q, texts.iat[i]) for q, (c, _) in zip(queries, cut)
+                for i in c if (q, hashes[i]) not in cache}
+        if todo:
+            if self._reranker is None:
+                self._reranker = CrossEncoder(s["rerank_model"], max_length=256)
+            keys = list(todo)
+            logits = self._reranker.predict([todo[k] for k in keys], batch_size=64,
+                                            show_progress_bar=len(keys) > 2000)
+            cache.update(zip(keys, map(float, logits)))
+            cache_p.parent.mkdir(parents=True, exist_ok=True)
+            cache_p.write_bytes(pickle.dumps(cache))
+        out = []
+        for q, (c, d) in zip(queries, cut):
+            sc = np.array([cache[(q, hashes[i])] for i in c])
+            o = np.argsort(-sc, kind="stable")
+            out.append((c[o], sc[o], d[o]))
+        return out
+
+    # ---- voting + threshold
+    def decide(self, cands, **override):
+        """Per query: {"answer", "ranking": [(label, vote), ...], "confidence", "conf": {...}}."""
+        s = {**self.s, **override}
+        res = []
+        for cid, score, sim in cands:
+            if len(cid) == 0:
+                res.append({"answer": NO_MATCH, "ranking": [], "confidence": -np.inf,
+                            "conf": {}, "best": {}})
+                continue
+            w = self.weights[cid]
+            if s["scoring"] == "exp":
+                v = np.exp((score - score.max()) / s["temperature"]) * w
+            else:
+                v = score * w
+            votes, best, best_sim = defaultdict(float), {}, {}
+            for c, vv, sc, d in zip(cid, v, score, sim):
+                lab = self.labels[c]
+                votes[lab] += vv
+                if lab not in best or sc > best[lab][0]:
+                    best[lab] = (float(sc), int(c))
+                best_sim[lab] = max(best_sim.get(lab, -np.inf), float(d))
+            ranking = sorted(votes.items(), key=lambda x: -x[1])
+            top = ranking[0][0]
+            total = sum(votes.values())
+            conf = {"top_score": best[top][0], "top_sim": best_sim[top],
+                    "share": ranking[0][1] / total if total > 0 else 0.0}
+            c = conf[s["confidence"]]
+            answer = NO_MATCH if s["threshold"] is not None and c < s["threshold"] else top
+            res.append({"answer": answer, "ranking": ranking, "confidence": c, "conf": conf,
+                        "best": best})
+        return res
+
+    def search_batch(self, queries, franchise=None):
+        return self.decide(self.candidates(queries, franchise))
+
+
+def search(cfg, query, top=5, franchise=None):
+    sr = Searcher(cfg)
+    r = sr.search_batch([query], franchise)[0]
     print(f'\nQuery: "{query}"\n')
-    for rank, ((title, s, e), score) in enumerate(ranked, 1):
-        ep = f" S{int(s):02d}E{int(e):02d}" if pd.notna(s) else ""
-        sim, text, pos = best[(title, s, e)]
-        print(f"{rank}. {title}{ep}   vote={score:.3f}  best_sim={sim:.3f}  ~{pos:.0%} in")
-        print(f"     ...{text[:110]}...")
+    if r["answer"] == NO_MATCH:
+        print(f"-> no match (confidence {r['confidence']:.3f} < threshold "
+              f"{cfg['search']['threshold']})\n")
+    for rank, (label, vote) in enumerate(r["ranking"][:top], 1):
+        score, cid = r["best"][label]
+        row = sr.df.iloc[cid]
+        print(f"{rank}. {label}   vote={vote:.3f}  best={score:.3f}  ~{row['position']:.0%} in")
+        print(f"     ...{row['text'][:110]}...")
 
 
 def stats(cfg):
@@ -421,14 +608,17 @@ if __name__ == "__main__":
     ap.add_argument("cmd", choices=["build", "search", "stats"])
     ap.add_argument("query", nargs="?")
     ap.add_argument("--franchise")
-    ap.add_argument("-k", type=int, default=20)
+    ap.add_argument("-k", type=int, help="chunks that vote (default: config search.k)")
+    ap.add_argument("--config", default=str(CONFIG_PATH))
     a = ap.parse_args()
-    cfg = load_config()
+    cfg = load_config(a.config)
+    if a.k:
+        cfg["search"]["k"] = a.k
     if a.cmd == "build":
         build(cfg)
     elif a.cmd == "search":
         if not a.query:
             sys.exit('give some dialogue: python build_index.py search "where is my son"')
-        search(cfg, a.query, k=a.k, franchise=a.franchise)
+        search(cfg, a.query, franchise=a.franchise)
     else:
         stats(cfg)
