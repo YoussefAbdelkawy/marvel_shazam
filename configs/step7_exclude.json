@@ -1,0 +1,151 @@
+{
+  "sources": [
+    {
+      "franchise": "marvel",
+      "folder": "subs"
+    }
+  ],
+  "model": "BAAI/bge-small-en-v1.5",
+  "scales": [
+    [
+      30,
+      15
+    ],
+    [
+      60,
+      30
+    ]
+  ],
+  "min_chunk_words": 12,
+  "recap_window_words": 400,
+  "recap_min_sentence_words": 4,
+  "shingle_words": 5,
+  "flat_index_max": 1000000,
+  "embed_batch_size": 64,
+  "work_dir": "index_data",
+  "titles_csv": "titles.csv",
+  "search": {
+    "k": 20,
+    "scoring": "exp",
+    "temperature": 0.02,
+    "confidence": "calibrated",
+    "threshold": 0.28141517600627164,
+    "hybrid": false,
+    "dense_depth": 50,
+    "bm25_depth": 50,
+    "rrf_k": 60,
+    "bm25_k1": 1.5,
+    "bm25_b": 0.75,
+    "bm25_epsilon": 0.25,
+    "rerank": false,
+    "rerank_model": "BAAI/bge-reranker-base",
+    "rerank_depth": 50,
+    "background": false,
+    "calibrator": {
+      "features": [
+        "len_mid",
+        "len_short",
+        "log_words",
+        "margin",
+        "n_titles",
+        "overlap2",
+        "share",
+        "sim_gap",
+        "sim_z",
+        "top_score",
+        "top_sim"
+      ],
+      "mean": [
+        0.33458333333333334,
+        0.33166666666666667,
+        2.8995806081259423,
+        0.5028725587206673,
+        0.7248333333333333,
+        0.43971358558061885,
+        0.582102327022556,
+        0.0955135602476695,
+        4.9535974919892425,
+        0.814773777499795,
+        0.814773777499795
+      ],
+      "scale": [
+        0.4718446008301577,
+        0.4708119474169172,
+        0.6007286342907425,
+        0.41553648649335145,
+        0.17138520715528452,
+        0.39354347615983853,
+        0.3577521082687779,
+        0.05959358667507513,
+        1.506526809317938,
+        0.07637941720144419,
+        0.07637941720144419
+      ],
+      "coef": [
+        -0.3413789355964595,
+        -0.9225904771552652,
+        -0.7626752101387577,
+        2.5491310424529,
+        -0.13541255740223615,
+        3.9520158559063936,
+        0.03535648229746001,
+        -1.2708519676905992,
+        0.6730259140000374,
+        -0.31380439045325753,
+        -0.31380439045325753
+      ],
+      "intercept": 1.320109482625395
+    },
+    "threshold_by_length": {
+      "short": 0.24907852827799032,
+      "mid": 0.14880873839914008,
+      "long": 0.40855193958934966
+    }
+  },
+  "exclude_files": [
+    "tv__daredevil_2015__s01e14.txt",
+    "tv__daredevil_2015__s01e15.txt",
+    "tv__daredevil_2015__s01e16.txt",
+    "tv__daredevil_2015__s01e17.txt",
+    "tv__daredevil_2015__s01e18.txt",
+    "tv__daredevil_2015__s01e19.txt",
+    "tv__daredevil_2015__s01e20.txt",
+    "tv__daredevil_2015__s02e14.txt",
+    "tv__daredevil_2015__s02e15.txt",
+    "tv__daredevil_2015__s02e16.txt",
+    "tv__daredevil_2015__s02e17.txt",
+    "tv__daredevil_2015__s02e18.txt",
+    "tv__daredevil_2015__s02e19.txt",
+    "tv__daredevil_2015__s02e20.txt",
+    "tv__daredevil_2015__s02e21.txt",
+    "tv__daredevil_2015__s02e22.txt",
+    "tv__daredevil_2015__s02e23.txt",
+    "tv__daredevil_2015__s02e24.txt",
+    "tv__daredevil_2015__s02e25.txt",
+    "tv__daredevil_2015__s02e26.txt",
+    "tv__daredevil_2015__s02e27.txt",
+    "tv__daredevil_2015__s02e28.txt",
+    "tv__daredevil_2015__s02e29.txt",
+    "tv__daredevil_2015__s02e30.txt",
+    "tv__daredevil_2015__s02e31.txt",
+    "tv__daredevil_2015__s02e32.txt",
+    "tv__the_punisher_2017__s01e14.txt",
+    "tv__the_punisher_2017__s01e15.txt",
+    "tv__the_punisher_2017__s01e16.txt",
+    "tv__the_punisher_2017__s01e17.txt",
+    "tv__the_punisher_2017__s01e18.txt",
+    "tv__the_punisher_2017__s01e19.txt",
+    "tv__the_punisher_2017__s01e20.txt",
+    "tv__the_defenders_2017__s01e09.txt",
+    "tv__the_defenders_2017__s01e10.txt",
+    "tv__the_defenders_2017__s01e11.txt",
+    "tv__the_defenders_2017__s01e12.txt",
+    "tv__the_defenders_2017__s01e13.txt",
+    "tv__the_defenders_2017__s01e14.txt",
+    "tv__the_defenders_2017__s01e15.txt",
+    "tv__the_defenders_2017__s01e16.txt",
+    "tv__the_defenders_2017__s01e17.txt",
+    "tv__the_defenders_2017__s01e18.txt",
+    "tv__cloak_dagger_2018__s02e12.txt"
+  ]
+}

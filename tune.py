@@ -74,7 +74,7 @@ def main():
     for scoring in a.scorings.split(","):
         for T in (TEMPS if scoring == "exp" else [cfg["search"]["temperature"]]):
             res = sr.decide(cands, scoring=scoring, temperature=T, threshold=None,
-                            threshold_by_length=None, calibrator=None)
+                            threshold_by_length=None, calibrator=None, confidence="share")
             top = np.array([r["ranking"][0][0] if r["ranking"] else "" for r in res])
             correct = top == truth
             kept[(scoring, T)] = (res, correct)
