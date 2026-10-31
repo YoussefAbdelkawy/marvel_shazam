@@ -52,6 +52,7 @@ DEFAULT_SEARCH = {
     "rerank": False,               # rescore candidates with a cross-encoder
     "rerank_model": "BAAI/bge-reranker-base",
     "rerank_depth": 50,
+    "rerank_max_length": 256,      # tokens per (query, chunk) pair; 128 fits 60-word chunks
     "background": False,           # also search a non-Marvel "background" index (build_background.py)
     "calibrator": None,            # logistic model over confidence features (tune.py fits it)
     "threshold_by_length": None,   # {"short": t, "mid": t, "long": t}: overrides threshold
@@ -555,7 +556,8 @@ class Searcher:
         import pickle
         from sentence_transformers import CrossEncoder
         s = self.s
-        cache_p = ROOT / self.cfg["work_dir"] / "rerank_cache" / f"{model_slug(s['rerank_model'])}.pkl"
+        cache_p = (ROOT / self.cfg["work_dir"] / "rerank_cache"
+                   / f"{model_slug(s['rerank_model'])}_{s['rerank_max_length']}.pkl")
         if self._rerank_cache is None:
             self._rerank_cache = pickle.loads(cache_p.read_bytes()) if cache_p.exists() else {}
         cache, hashes, texts = self._rerank_cache, self.df["text_hash"].to_numpy(), self.df["text"]
@@ -564,7 +566,7 @@ class Searcher:
                 for i in c if (q, hashes[i]) not in cache}
         if todo:
             if self._reranker is None:
-                self._reranker = CrossEncoder(s["rerank_model"], max_length=256)
+                self._reranker = CrossEncoder(s["rerank_model"], max_length=s["rerank_max_length"])
             keys = list(todo)
             logits = self._reranker.predict([todo[k] for k in keys], batch_size=64,
                                             show_progress_bar=len(keys) > 2000)
