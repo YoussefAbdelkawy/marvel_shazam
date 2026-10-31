@@ -1,0 +1,29 @@
+{
+ "accept": 0.9159039999999997,
+ "results": {
+  "always 1 window(s)": {
+   "top1": 0.7433333333333333,
+   "false_accept": 0.05,
+   "score": 0.7183333333333333,
+   "avg_windows": 1
+  },
+  "always 2 window(s)": {
+   "top1": 0.9633333333333334,
+   "false_accept": 0.0033333333333333335,
+   "score": 0.9616666666666667,
+   "avg_windows": 2
+  },
+  "always 3 window(s)": {
+   "top1": 0.98,
+   "false_accept": 0.0,
+   "score": 0.98,
+   "avg_windows": 3
+  },
+  "keep listening (accept >= 0.9159)": {
+   "top1": 0.99,
+   "false_accept": 0.0,
+   "score": 0.99,
+   "avg_windows": 2.265
+  }
+ }
+}
