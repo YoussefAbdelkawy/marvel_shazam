@@ -1,0 +1,211 @@
+{
+ "split": "dev",
+ "config": "configs/step3a_simple.json",
+ "index": "baai-bge-small-en-v1-5__30-15_60-30",
+ "search": {
+  "k": 20,
+  "scoring": "exp",
+  "temperature": 0.02,
+  "confidence": "share",
+  "threshold": 0.40619622013745227,
+  "hybrid": false,
+  "dense_depth": 50,
+  "bm25_depth": 50,
+  "rrf_k": 60,
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "bm25_epsilon": 0.25,
+  "rerank": false,
+  "rerank_model": "BAAI/bge-reranker-base",
+  "rerank_depth": 50,
+  "background": false,
+  "calibrator": null,
+  "threshold_by_length": null
+ },
+ "seconds": 139.20148301124573,
+ "metrics": {
+  "overall": {
+   "n": 1800,
+   "top1": 0.7333333333333333,
+   "top5": 0.8611111111111112,
+   "mrr": 0.82415665960764
+  },
+  "by_length_noise": {
+   "10w_clean": {
+    "n": 300,
+    "top1": 0.48,
+    "top5": 0.7566666666666667,
+    "mrr": 0.6869173280423281
+   },
+   "10w_noisy": {
+    "n": 300,
+    "top1": 0.23666666666666666,
+    "top5": 0.48,
+    "mrr": 0.4049767033075857
+   },
+   "20w_clean": {
+    "n": 300,
+    "top1": 0.9533333333333334,
+    "top5": 1.0,
+    "mrr": 0.9838888888888888
+   },
+   "20w_noisy": {
+    "n": 300,
+    "top1": 0.76,
+    "top5": 0.93,
+    "mrr": 0.8791570374070373
+   },
+   "40w_clean": {
+    "n": 300,
+    "top1": 0.9933333333333333,
+    "top5": 1.0,
+    "mrr": 0.9966666666666667
+   },
+   "40w_noisy": {
+    "n": 300,
+    "top1": 0.9766666666666667,
+    "top5": 1.0,
+    "mrr": 0.9933333333333333
+   }
+  },
+  "by_length": {
+   "10w": {
+    "n": 600,
+    "top1": 0.35833333333333334,
+    "top5": 0.6183333333333333,
+    "mrr": 0.5459470156749568
+   },
+   "20w": {
+    "n": 600,
+    "top1": 0.8566666666666667,
+    "top5": 0.965,
+    "mrr": 0.9315229631479631
+   },
+   "40w": {
+    "n": 600,
+    "top1": 0.985,
+    "top5": 1.0,
+    "mrr": 0.995
+   }
+  },
+  "clean": {
+   "n": 900,
+   "top1": 0.8088888888888889,
+   "top5": 0.9188888888888889,
+   "mrr": 0.8891576278659612
+  },
+  "noisy": {
+   "n": 900,
+   "top1": 0.6577777777777778,
+   "top5": 0.8033333333333333,
+   "mrr": 0.7591556913493188
+  },
+  "neg_rejection": 0.925,
+  "pos_false_reject": 0.23555555555555555,
+  "top1_raw": 0.7938888888888889,
+  "neg_false_accept": 0.07499999999999996,
+  "score": 0.6202777777777778
+ },
+ "worst_titles": [
+  {
+   "true_title": "Deadpool 2 (2018)",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agent Carter (2015) S01E06",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agent Carter (2015) S01E07",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agent Carter (2015) S02E01",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E07",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E16",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E20",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S02E03",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S03E12",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S04E04",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E08",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E20",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E09",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E10",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Black Panther (2018)",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S01E08",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S02E08",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S01E02",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S01E16",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S01E17",
+   "n": 2,
+   "top1": 0.0
+  }
+ ]
+}

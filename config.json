@@ -26,10 +26,10 @@
   "titles_csv": "titles.csv",
   "search": {
     "k": 20,
-    "scoring": "linear",
-    "temperature": 0.05,
-    "confidence": "top_score",
-    "threshold": null,
+    "scoring": "exp",
+    "temperature": 0.02,
+    "confidence": "share",
+    "threshold": 0.40619622013745227,
     "hybrid": false,
     "dense_depth": 50,
     "bm25_depth": 50,
@@ -39,6 +39,9 @@
     "bm25_epsilon": 0.25,
     "rerank": false,
     "rerank_model": "BAAI/bge-reranker-base",
-    "rerank_depth": 50
+    "rerank_depth": 50,
+    "background": false,
+    "calibrator": null,
+    "threshold_by_length": null
   }
 }
