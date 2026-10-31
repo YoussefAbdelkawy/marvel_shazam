@@ -1,0 +1,23 @@
+{
+  "sources": [
+    {
+      "franchise": "marvel",
+      "folder": "subs"
+    }
+  ],
+  "model": "BAAI/bge-small-en-v1.5",
+  "scales": [
+    [
+      60,
+      30
+    ]
+  ],
+  "min_chunk_words": 12,
+  "recap_window_words": 400,
+  "recap_min_sentence_words": 4,
+  "shingle_words": 5,
+  "flat_index_max": 1000000,
+  "embed_batch_size": 64,
+  "work_dir": "index_data",
+  "titles_csv": "titles.csv"
+}
