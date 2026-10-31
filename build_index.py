@@ -34,6 +34,7 @@ DEFAULT_CONFIG = {
     "embed_batch_size": 64,
     "work_dir": "index_data",
     "titles_csv": "titles.csv",    # optional: file_stem,title  to restore real titles ("S.H.I.E.L.D.")
+    "exclude_files": [],           # subtitle files kept on disk but left out of the index (bad data)
 }
 
 # how search turns retrieved chunks into an answer; every option can be switched in config.json
@@ -51,7 +52,15 @@ DEFAULT_SEARCH = {
     "rerank": False,               # rescore candidates with a cross-encoder
     "rerank_model": "BAAI/bge-reranker-base",
     "rerank_depth": 50,
+    "background": False,           # also search a non-Marvel "background" index (build_background.py)
+    "calibrator": None,            # logistic model over confidence features (tune.py fits it)
+    "threshold_by_length": None,   # {"short": t, "mid": t, "long": t}: overrides threshold
 }
+LENGTH_BUCKETS = ((11, "short"), (25, "mid"), (10 ** 9, "long"))   # query words -> bucket
+
+
+def length_bucket(n_words):
+    return next(name for limit, name in LENGTH_BUCKETS if n_words <= limit)
 NO_MATCH = "no match"
 
 
@@ -72,7 +81,15 @@ def model_slug(name):
 
 def index_dir(cfg):
     scales = "_".join(f"{c}-{s}" for c, s in cfg["scales"])
-    return ROOT / cfg["work_dir"] / "indexes" / f"{model_slug(cfg['model'])}__{scales}"
+    name = f"{model_slug(cfg['model'])}__{scales}"
+    if cfg.get("exclude_files"):
+        name += "__x" + hashlib.sha1("|".join(sorted(cfg["exclude_files"])).encode()).hexdigest()[:8]
+    return ROOT / cfg["work_dir"] / "indexes" / name
+
+
+def background_dir(cfg):
+    scales = "_".join(f"{c}-{s}" for c, s in cfg["scales"])
+    return ROOT / cfg["work_dir"] / "background" / f"{model_slug(cfg['model'])}__{scales}"
 
 
 # ------------------------------------------------------------------ filename -> metadata
@@ -386,6 +403,10 @@ def build(cfg):
     gone = [f for f in old_manifest if f not in manifest]
     print(f"Files: {len(docs)} subtitle files, {len(new_files)} new/changed, {len(gone)} removed"
           + (f", {len(skipped)} ignored (name not recognised)" if skipped else ""))
+    if cfg.get("exclude_files"):       # after recap removal, so the remaining text is unchanged
+        excl = set(cfg["exclude_files"])
+        docs = [d for d in docs if d["source_file"] not in excl]
+        print(f"Excluded {len(excl)} files listed in exclude_files")
 
     df = make_chunks(docs, cfg)
     df = add_vote_weights(df, cfg)
@@ -441,7 +462,8 @@ class BM25Index:
                 if len(vals) > depth:
                     p = np.argpartition(-vals, depth)[:depth]
                     ids, vals = ids[p], vals[p]
-                out.append(ids[np.argsort(-vals, kind="stable")].astype(np.int64))
+                o = np.argsort(-vals, kind="stable")
+                out.append((ids[o].astype(np.int64), vals[o].astype(np.float64)))
         return out
 
 
@@ -465,19 +487,24 @@ class Searcher:
         self.embedder = Embedder(cfg["model"])
         self._bm25 = self._reranker = None
         self._rerank_cache = None
+        self.bg_index = None
+        if self.s["background"]:
+            self.bg_index = faiss.read_index(str(background_dir(cfg) / "index.faiss"))
 
     # ---- retrieval
     def candidates(self, queries, franchise=None):
-        """Per query: (chunk_ids, chunk_scores, dense_sims), best first, at most k long."""
+        """Per query a dict: cid / score / sim arrays (best first, at most k long) plus the
+        query-level evidence the confidence features need."""
         s, queries = self.s, list(queries)
         q = self.embedder.encode(queries, self.cfg["embed_batch_size"], progress=len(queries) > 500)
-        depth = s["k"]
+        depth = max(s["k"], 100)                             # 100: dense score spread feature
         if s["hybrid"] or s["rerank"]:
             depth = max(depth, s["dense_depth"], s["rerank_depth"] if s["rerank"] else 0)
         if franchise:
             depth = min(len(self.df), depth * 10)
         sims, ids = self.index.search(q, depth)
         bm = self._bm25_index().top(queries, s["bm25_depth"]) if s["hybrid"] else None
+        bg = self.bg_index.search(q, 1)[0][:, 0] if self.bg_index is not None else None
         fr = self.df["franchise"].to_numpy() if franchise else None
         out = []
         for qi in range(len(queries)):
@@ -485,9 +512,16 @@ class Searcher:
             if franchise:
                 keep &= fr[np.clip(ids[qi], 0, None)] == franchise
             cid, sim = ids[qi][keep], sims[qi][keep].astype(np.float64)
+            ev = {"query": queries[qi], "dense_top": float(sim[0]) if len(sim) else 0.0,
+                  "dense_mean": float(sim.mean()) if len(sim) else 0.0,
+                  "dense_std": float(sim.std()) if len(sim) else 0.0}
+            if bg is not None:
+                ev["bg_sim"] = float(bg[qi])
             if s["hybrid"]:
+                bm_ids, bm_vals = bm[qi]
+                ev["bm25_top"] = float(bm_vals[0]) if len(bm_vals) else 0.0
                 fused = defaultdict(float)
-                for ranked in (cid[:s["dense_depth"]], bm[qi]):
+                for ranked in (cid[:s["dense_depth"]], bm_ids):
                     for r, i in enumerate(ranked):
                         fused[int(i)] += 1.0 / (s["rrf_k"] + r + 1)
                 order = sorted(fused, key=lambda i: -fused[i])
@@ -498,10 +532,12 @@ class Searcher:
                 sim = self._dense_sims(q[qi], cid)
             else:
                 score = sim
-            out.append((cid, score, sim))
+            out.append({"cid": cid, "score": score, "sim": sim, **ev})
         if s["rerank"]:
             out = self._rerank(queries, out)
-        return [(c[:s["k"]], sc[:s["k"]], d[:s["k"]]) for c, sc, d in out]
+        k = s["k"]
+        return [{**c, "cid": c["cid"][:k], "score": c["score"][:k], "sim": c["sim"][:k]}
+                for c in out]
 
     def _dense_sims(self, qv, cid):
         if len(cid) == 0:
@@ -523,7 +559,7 @@ class Searcher:
         if self._rerank_cache is None:
             self._rerank_cache = pickle.loads(cache_p.read_bytes()) if cache_p.exists() else {}
         cache, hashes, texts = self._rerank_cache, self.df["text_hash"].to_numpy(), self.df["text"]
-        cut = [(c[:s["rerank_depth"]], d[:s["rerank_depth"]]) for c, _, d in cands]
+        cut = [(c["cid"][:s["rerank_depth"]], c["sim"][:s["rerank_depth"]]) for c in cands]
         todo = {(q, hashes[i]): (q, texts.iat[i]) for q, (c, _) in zip(queries, cut)
                 for i in c if (q, hashes[i]) not in cache}
         if todo:
@@ -536,18 +572,53 @@ class Searcher:
             cache_p.parent.mkdir(parents=True, exist_ok=True)
             cache_p.write_bytes(pickle.dumps(cache))
         out = []
-        for q, (c, d) in zip(queries, cut):
-            sc = np.array([cache[(q, hashes[i])] for i in c])
+        for cand, (c, d) in zip(cands, cut):
+            sc = np.array([cache[(cand["query"], hashes[i])] for i in c])
             o = np.argsort(-sc, kind="stable")
-            out.append((c[o], sc[o], d[o]))
+            out.append({**cand, "cid": c[o], "score": sc[o], "sim": d[o],
+                        "rerank_top": float(sc[o][0]) if len(sc) else -10.0})
         return out
 
     # ---- voting + threshold
+    def features(self, cand, ranking, best, best_sim, votes_total):
+        """Query-level evidence that the winner is real (all usable by the calibrator)."""
+        top = ranking[0][0]
+        qw = norm(cand["query"])
+        best_text = norm(self.df["text"].iat[best[top][1]])
+        bigrams = lambda w: {(a, b) for a, b in zip(w, w[1:])}
+        qb = bigrams(qw)
+        f = {"share": ranking[0][1] / votes_total if votes_total > 0 else 0.0,
+             "margin": ((ranking[0][1] - (ranking[1][1] if len(ranking) > 1 else 0.0))
+                        / votes_total if votes_total > 0 else 0.0),
+             "n_titles": len(ranking) / max(len(cand["cid"]), 1),
+             "top_score": best[top][0],
+             "top_sim": best_sim[top],
+             "sim_gap": best_sim[top] - cand["dense_mean"],
+             "sim_z": (best_sim[top] - cand["dense_mean"]) / (cand["dense_std"] + 1e-6),
+             "overlap2": len(qb & bigrams(best_text)) / max(len(qb), 1),
+             "log_words": np.log(max(len(qw), 1)),
+             "len_short": float(length_bucket(len(qw)) == "short"),
+             "len_mid": float(length_bucket(len(qw)) == "mid")}
+        if "bg_sim" in cand:
+            f["bg_sim"] = cand["bg_sim"]
+            f["bg_gap"] = best_sim[top] - cand["bg_sim"]
+        if "bm25_top" in cand:
+            f["bm25_per_word"] = cand["bm25_top"] / max(len(qw), 1)
+        if "rerank_top" in cand:
+            f["rerank_top"] = cand["rerank_top"]
+        return f
+
+    @staticmethod
+    def calibrated(f, cal):
+        x = (np.array([f[n] for n in cal["features"]]) - cal["mean"]) / cal["scale"]
+        return float(1.0 / (1.0 + np.exp(-(x @ np.array(cal["coef"]) + cal["intercept"]))))
+
     def decide(self, cands, **override):
         """Per query: {"answer", "ranking": [(label, vote), ...], "confidence", "conf": {...}}."""
         s = {**self.s, **override}
         res = []
-        for cid, score, sim in cands:
+        for cand in cands:
+            cid, score, sim = cand["cid"], cand["score"], cand["sim"]
             if len(cid) == 0:
                 res.append({"answer": NO_MATCH, "ranking": [], "confidence": -np.inf,
                             "conf": {}, "best": {}})
@@ -566,11 +637,14 @@ class Searcher:
                 best_sim[lab] = max(best_sim.get(lab, -np.inf), float(d))
             ranking = sorted(votes.items(), key=lambda x: -x[1])
             top = ranking[0][0]
-            total = sum(votes.values())
-            conf = {"top_score": best[top][0], "top_sim": best_sim[top],
-                    "share": ranking[0][1] / total if total > 0 else 0.0}
+            conf = self.features(cand, ranking, best, best_sim, sum(votes.values()))
+            if s["calibrator"]:
+                conf["calibrated"] = self.calibrated(conf, s["calibrator"])
             c = conf[s["confidence"]]
-            answer = NO_MATCH if s["threshold"] is not None and c < s["threshold"] else top
+            thr = s["threshold"]
+            if s["threshold_by_length"]:
+                thr = s["threshold_by_length"][length_bucket(len(norm(cand["query"])))]
+            answer = NO_MATCH if thr is not None and c < thr else top
             res.append({"answer": answer, "ranking": ranking, "confidence": c, "conf": conf,
                         "best": best})
         return res

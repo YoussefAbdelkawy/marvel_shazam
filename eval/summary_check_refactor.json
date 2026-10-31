@@ -1,0 +1,211 @@
+{
+ "split": "dev",
+ "config": "C:\\Users\\yusef\\PycharmProjects\\marvel_shazam\\config.json",
+ "index": "baai-bge-small-en-v1-5__60-30",
+ "search": {
+  "k": 20,
+  "scoring": "linear",
+  "temperature": 0.05,
+  "confidence": "top_score",
+  "threshold": null,
+  "hybrid": false,
+  "dense_depth": 50,
+  "bm25_depth": 50,
+  "rrf_k": 60,
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "bm25_epsilon": 0.25,
+  "rerank": false,
+  "rerank_model": "BAAI/bge-reranker-base",
+  "rerank_depth": 50,
+  "background": false,
+  "calibrator": null,
+  "threshold_by_length": null
+ },
+ "seconds": 46.220338106155396,
+ "metrics": {
+  "overall": {
+   "n": 1800,
+   "top1": 0.5138888888888888,
+   "top5": 0.7216666666666667,
+   "mrr": 0.6059346816586884
+  },
+  "by_length_noise": {
+   "10w_clean": {
+    "n": 300,
+    "top1": 0.24,
+    "top5": 0.47333333333333333,
+    "mrr": 0.3389274967235493
+   },
+   "10w_noisy": {
+    "n": 300,
+    "top1": 0.16,
+    "top5": 0.29,
+    "mrr": 0.22455746207410296
+   },
+   "20w_clean": {
+    "n": 300,
+    "top1": 0.6033333333333334,
+    "top5": 0.8666666666666667,
+    "mrr": 0.7175128066378066
+   },
+   "20w_noisy": {
+    "n": 300,
+    "top1": 0.44,
+    "top5": 0.7333333333333333,
+    "mrr": 0.5650809127519654
+   },
+   "40w_clean": {
+    "n": 300,
+    "top1": 0.84,
+    "top5": 0.9966666666666667,
+    "mrr": 0.9114444444444443
+   },
+   "40w_noisy": {
+    "n": 300,
+    "top1": 0.8,
+    "top5": 0.97,
+    "mrr": 0.8780849673202613
+   }
+  },
+  "by_length": {
+   "10w": {
+    "n": 600,
+    "top1": 0.2,
+    "top5": 0.38166666666666665,
+    "mrr": 0.28174247939882613
+   },
+   "20w": {
+    "n": 600,
+    "top1": 0.5216666666666666,
+    "top5": 0.8,
+    "mrr": 0.6412968596948859
+   },
+   "40w": {
+    "n": 600,
+    "top1": 0.82,
+    "top5": 0.9833333333333333,
+    "mrr": 0.8947647058823531
+   }
+  },
+  "clean": {
+   "n": 900,
+   "top1": 0.5611111111111111,
+   "top5": 0.7788888888888889,
+   "mrr": 0.6559615826019335
+  },
+  "noisy": {
+   "n": 900,
+   "top1": 0.4666666666666667,
+   "top5": 0.6644444444444444,
+   "mrr": 0.5559077807154432
+  },
+  "neg_rejection": 0.0,
+  "pos_false_reject": 0.0,
+  "top1_raw": 0.5138888888888888,
+  "neg_false_accept": 1.0,
+  "score": -0.033333333333333326
+ },
+ "worst_titles": [
+  {
+   "true_title": "Agent Carter (2015) S01E08",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S02E06",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S03E10",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S04E11",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E12",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E12",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S01E02",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S01E07",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S02E10",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S02E13",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S03E05",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Deadpool 2 (2018)",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Inhumans (2017) S01E03",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Inhumans (2017) S01E04",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Iron Fist (2017) S01E03",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Iron Man (2008)",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S01E03",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S02E03",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Legion (2017) S02E01",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Legion (2017) S03E05",
+   "n": 4,
+   "top1": 0.0
+  }
+ ]
+}

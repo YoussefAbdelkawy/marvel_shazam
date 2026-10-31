@@ -1,0 +1,211 @@
+{
+ "split": "dev",
+ "config": "configs/step2_multiscale.json",
+ "index": "baai-bge-small-en-v1-5__30-15_60-30",
+ "search": {
+  "k": 20,
+  "scoring": "linear",
+  "temperature": 0.05,
+  "confidence": "top_score",
+  "threshold": null,
+  "hybrid": false,
+  "dense_depth": 50,
+  "bm25_depth": 50,
+  "rrf_k": 60,
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "bm25_epsilon": 0.25,
+  "rerank": false,
+  "rerank_model": "BAAI/bge-reranker-base",
+  "rerank_depth": 50,
+  "background": false,
+  "calibrator": null,
+  "threshold_by_length": null
+ },
+ "seconds": 70.33029985427856,
+ "metrics": {
+  "overall": {
+   "n": 1800,
+   "top1": 0.6961111111111111,
+   "top5": 0.8588888888888889,
+   "mrr": 0.7659203280379752
+  },
+  "by_length_noise": {
+   "10w_clean": {
+    "n": 300,
+    "top1": 0.47333333333333333,
+    "top5": 0.7533333333333333,
+    "mrr": 0.5911210317460317
+   },
+   "10w_noisy": {
+    "n": 300,
+    "top1": 0.26666666666666666,
+    "top5": 0.4866666666666667,
+    "mrr": 0.3607822588631412
+   },
+   "20w_clean": {
+    "n": 300,
+    "top1": 0.83,
+    "top5": 0.9933333333333333,
+    "mrr": 0.9013968253968255
+   },
+   "20w_noisy": {
+    "n": 300,
+    "top1": 0.71,
+    "top5": 0.92,
+    "mrr": 0.7992218522218523
+   },
+   "40w_clean": {
+    "n": 300,
+    "top1": 0.96,
+    "top5": 1.0,
+    "mrr": 0.9788888888888888
+   },
+   "40w_noisy": {
+    "n": 300,
+    "top1": 0.9366666666666666,
+    "top5": 1.0,
+    "mrr": 0.9641111111111111
+   }
+  },
+  "by_length": {
+   "10w": {
+    "n": 600,
+    "top1": 0.37,
+    "top5": 0.62,
+    "mrr": 0.47595164530458645
+   },
+   "20w": {
+    "n": 600,
+    "top1": 0.77,
+    "top5": 0.9566666666666667,
+    "mrr": 0.8503093388093388
+   },
+   "40w": {
+    "n": 600,
+    "top1": 0.9483333333333334,
+    "top5": 1.0,
+    "mrr": 0.9714999999999999
+   }
+  },
+  "clean": {
+   "n": 900,
+   "top1": 0.7544444444444445,
+   "top5": 0.9155555555555556,
+   "mrr": 0.8238022486772487
+  },
+  "noisy": {
+   "n": 900,
+   "top1": 0.6377777777777778,
+   "top5": 0.8022222222222222,
+   "mrr": 0.7080384073987015
+  },
+  "neg_rejection": 0.0,
+  "pos_false_reject": 0.0,
+  "top1_raw": 0.6961111111111111,
+  "neg_false_accept": 1.0,
+  "score": 0.13777777777777778
+ },
+ "worst_titles": [
+  {
+   "true_title": "Agent Carter (2015) S01E08",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Deadpool 2 (2018)",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agent Carter (2015) S01E06",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agent Carter (2015) S01E07",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agent Carter (2015) S02E01",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E12",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E18",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E20",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S03E12",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S03E14",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S04E04",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S04E13",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E08",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E17",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E20",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E10",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E13",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Black Panther (2018)",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Blade The Series (2006) S01E11",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S01E08",
+   "n": 2,
+   "top1": 0.0
+  }
+ ]
+}

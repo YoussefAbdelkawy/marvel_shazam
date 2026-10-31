@@ -8,6 +8,10 @@
   "model": "BAAI/bge-small-en-v1.5",
   "scales": [
     [
+      30,
+      15
+    ],
+    [
       60,
       30
     ]
