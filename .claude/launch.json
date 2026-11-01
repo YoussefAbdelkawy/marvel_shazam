@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "app-fake-mic",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["app.py", "--no-window", "--fake-mic", "app/test_audio/infinity_war.wav"],
+      "port": 8765
+    }
+  ]
+}
