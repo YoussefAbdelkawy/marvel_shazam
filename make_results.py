@@ -14,8 +14,8 @@ STEPS = [  # (run, label, kept, note)
     ("step7_exclude", "+. Exclude 44 wrong-show subtitle files [#7]", "no", "see note 2"),
     ("step4_background", "+. Background non-Marvel index as feature [#4]", "no", "OOF SCORE lower"),
     ("step4_hybrid", "4. Hybrid BM25 + dense (RRF), recalibrated", "yes", ""),
-    ("step5_rerank", "5. Cross-encoder reranker bge-reranker-base [#6]", None, "depth 20, 128 tokens"),
-    ("step6_finetune", "6. Fine-tuned bge-small, background hard negatives [#8]", None, "~9.9k train triplets"),
+    ("step6_finetune", "6. Fine-tuned bge-small, background hard negatives [#8]", "yes", "9.9k train triplets"),
+    ("step5_rerank", "5. Cross-encoder reranker bge-reranker-base, on top of 6 [#6]", "yes", "depth 20, 128 tokens"),
 ]
 
 
@@ -49,11 +49,10 @@ def main(final_run="final_test", kept_runs=None):
         out += ["\n## Test split (final configuration, run once)\n",
                 "| | SCORE | noisy top-1 | clean top-1 | top-5 | MRR | neg. rejected "
                 "| pos. false-reject | | |", "|---|---|---|---|---|---|---|---|---|---|",
-                row("final config on TEST", t, "", ""),
-                *[row(f"{k} (dev)", load(k), "", "") for k in [kept_runs.get('_best')] if k]]
+                row("final config on TEST", t, "", "")]
         b = load("final_test_baseline")
         if b:
-            out.append(row("baseline on TEST", b, "", ""))
+            out.append(row("baseline on TEST (for comparison, untuned)", b, "", ""))
     for split in ("dev", "test"):
         p = ROOT / "eval_stream" / f"summary_{split}.json"
         if p.exists():

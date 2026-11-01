@@ -1,0 +1,212 @@
+{
+ "split": "test",
+ "config": "configs/step0_baseline.json",
+ "index": "baai-bge-small-en-v1-5__60-30",
+ "search": {
+  "k": 20,
+  "scoring": "linear",
+  "temperature": 0.05,
+  "confidence": "top_score",
+  "threshold": null,
+  "hybrid": false,
+  "dense_depth": 50,
+  "bm25_depth": 50,
+  "rrf_k": 60,
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "bm25_epsilon": 0.25,
+  "rerank": false,
+  "rerank_model": "BAAI/bge-reranker-base",
+  "rerank_depth": 50,
+  "rerank_max_length": 256,
+  "background": false,
+  "calibrator": null,
+  "threshold_by_length": null
+ },
+ "seconds": 46.46452617645264,
+ "metrics": {
+  "overall": {
+   "n": 1800,
+   "top1": 0.5116666666666667,
+   "top5": 0.7422222222222222,
+   "mrr": 0.611916149062305
+  },
+  "by_length_noise": {
+   "10w_clean": {
+    "n": 300,
+    "top1": 0.27,
+    "top5": 0.52,
+    "mrr": 0.38493543765602584
+   },
+   "10w_noisy": {
+    "n": 300,
+    "top1": 0.17666666666666667,
+    "top5": 0.3433333333333333,
+    "mrr": 0.2537180580141107
+   },
+   "20w_clean": {
+    "n": 300,
+    "top1": 0.58,
+    "top5": 0.9,
+    "mrr": 0.7111443001443001
+   },
+   "20w_noisy": {
+    "n": 300,
+    "top1": 0.47333333333333333,
+    "top5": 0.74,
+    "mrr": 0.5846926883029824
+   },
+   "40w_clean": {
+    "n": 300,
+    "top1": 0.82,
+    "top5": 0.9866666666666667,
+    "mrr": 0.8963333333333332
+   },
+   "40w_noisy": {
+    "n": 300,
+    "top1": 0.75,
+    "top5": 0.9633333333333334,
+    "mrr": 0.8406730769230769
+   }
+  },
+  "by_length": {
+   "10w": {
+    "n": 600,
+    "top1": 0.22333333333333333,
+    "top5": 0.43166666666666664,
+    "mrr": 0.31932674783506826
+   },
+   "20w": {
+    "n": 600,
+    "top1": 0.5266666666666666,
+    "top5": 0.82,
+    "mrr": 0.6479184942236412
+   },
+   "40w": {
+    "n": 600,
+    "top1": 0.785,
+    "top5": 0.975,
+    "mrr": 0.8685032051282051
+   }
+  },
+  "clean": {
+   "n": 900,
+   "top1": 0.5566666666666666,
+   "top5": 0.8022222222222222,
+   "mrr": 0.6641376903778865
+  },
+  "noisy": {
+   "n": 900,
+   "top1": 0.4666666666666667,
+   "top5": 0.6822222222222222,
+   "mrr": 0.5596946077467233
+  },
+  "neg_rejection": 0.0,
+  "pos_false_reject": 0.0,
+  "top1_raw": 0.5116666666666667,
+  "neg_false_accept": 1.0,
+  "score": -0.033333333333333326
+ },
+ "worst_titles": [
+  {
+   "true_title": "Agents Of S H I E L D (2013) S03E01",
+   "n": 6,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S01E10",
+   "n": 6,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S02E01",
+   "n": 6,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S01E08",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E11",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S05E21",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S06E11",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E05",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Agents Of S H I E L D (2013) S07E08",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S01E02",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Cloak Dagger (2018) S02E07",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S01E05",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S02E04",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S03E12",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S01E11",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S03E01",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Loki (2021) S02E05",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Luke Cage (2016) S01E10",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Luke Cage (2016) S02E08",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Madame Web (2024)",
+   "n": 4,
+   "top1": 0.0
+  }
+ ]
+}
