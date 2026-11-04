@@ -36,7 +36,7 @@ def make_sequences(split):
     splits = json.loads((ROOT / "eval" / "splits.json").read_text())["files"]
     span = WINDOW * N_WINDOWS
     seqs = []
-    files = [d for d in docs if splits[d["source_file"]][split][1]
+    files = [d for d in docs if d["source_file"] in splits and splits[d["source_file"]][split][1]
              - splits[d["source_file"]][split][0] >= span]
     rng.shuffle(files)
     for d in files[:N_SEQ]:

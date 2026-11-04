@@ -1,6 +1,8 @@
 # Missing and broken subtitles
 
-Collection: 706 files on disk; Fetch.py status: 660 done, 339 not found on OpenSubtitles. 45 of the 'done' files contain the wrong show.
+Collection: 706 files on disk; Fetch.py status: 660 done, 339 not found on OpenSubtitles. 46 of the 'done' files contain the wrong show.
+
+Fill the gaps with `python fetch_missing.py` (see its header for the free API keys).
 
 ## 1. TV episodes still needed
 
@@ -18,6 +20,7 @@ Correct episode = on disk and not a wrong-show file. 'Needed' = expected minus c
 | Spider Noir (2026) | 8 | 0 | **8** | S01 E01-E08 |
 | Spidey Super Stories (1974) * | ? | 0 | **29** | S01 E01-E10; S02 E01-E10; S03 E01-E09 |
 | The Amazing Spider Man (1977) | 14 | 3 | **11** | S01 E03, E05-E06; S02 E01-E08 |
+| The Gifted (2017) | 29 | 28 | **1** | S01 E13 |
 | The Incredible Hulk (1977) | 82 | 64 | **18** | S04 E01-E18 |
 | What If (2021) | 26 | 0 | **26** | S01 E01-E09; S02 E01-E09; S03 E01-E08 |
 | Wolverine And The X Men (2009) | 26 | 0 | **26** | S01 E01-E26 |
@@ -27,15 +30,15 @@ Correct episode = on disk and not a wrong-show file. 'Needed' = expected minus c
 | X Men The Animated Series (1992) | ? | 0 | **76** | S01 E01-E16; S02 E01-E16; S03 E01-E16; S04 E01-E16; S05 E01-E12 |
 | Your Friendly Neighborhood Spider Man (2025) | 11 | 0 | **11** | S01 E01-E10; S02 E01 |
 
-**354 episodes needed in total.** * = Fetch.py's episode lookup failed for this show:
+**355 episodes needed in total.** * = Fetch.py's episode lookup failed for this show:
 
-- Daredevil (2015): episode lookup returned nothing, so impossible episodes were never filtered
+- Daredevil (2015): episode lookup returned nothing, so impossible episodes were never filtered (a 'Daredevil' search also matches 'Kick Buttowski: Suburban Daredevil')
 - The Punisher (2017): episode lookup returned nothing, so impossible episodes were never filtered
 - Cloak Dagger (2018): episode lookup returned nothing, so impossible episodes were never filtered
 - The Defenders (2017): lookup matched the 2010 CBS legal drama 'The Defenders' (18 episodes), not Marvel's (8)
-- Spidey Super Stories (1974): episode lookup returned nothing
+- Spidey Super Stories (1974): episode lookup returned nothing (they were segments of The Electric Company)
 
-## 2. Files on disk that contain the wrong show (45) - re-download
+## 2. Files on disk that contain the wrong show (46) - re-download
 
 These need replacing (or removing). They are still in subs/; the index option `exclude_files` can leave them out.
 
@@ -46,6 +49,7 @@ These need replacing (or removing). They are still in subs/; the index option `e
 | Daredevil (2015) | 2 | E14-E32 (season has 13 episodes) | Kick Buttowski (cartoon) |
 | Legion (2017) | 3 | E10 (season has 8 episodes) | Supergirl (Legion of Super-Heroes episode) |
 | The Defenders (2017) | 1 | E09-E18 (season has 8 episodes) | The Defenders (2010, CBS legal drama) |
+| The Gifted (2017) | 1 | E13 | Urusei Yatsura (anime) - a real episode, re-download it |
 | The Punisher (2017) | 1 | E14-E20 (season has 13 episodes) | a Taiwanese Netflix series |
 
 ## 3. Files that are present but damaged or incomplete
@@ -67,12 +71,13 @@ This list is from memory, not from an API. Check it before downloading.
 
 - The Punisher (1989)
 - Captain America (1990)
-- The Fantastic Four (1994, unreleased)
+- The Fantastic Four (1994)
 - Man-Thing (2005)
-- Nick Fury: Agent of S.H.I.E.L.D. (1998, TV movie)
-- Generation X (1996, TV movie)
-- Doctor Strange (1978, TV movie)
-- Captain America (1979) and Captain America II: Death Too Soon (1979, TV movies)
+- Nick Fury: Agent of S.H.I.E.L.D. (1998)
+- Generation X (1996)
+- Dr. Strange (1978)
+- Captain America (1979)
+- Captain America II: Death Too Soon (1979)
 - The Incredible Hulk Returns (1988)
 - The Trial of the Incredible Hulk (1989)
 - The Death of the Incredible Hulk (1990)
@@ -82,7 +87,7 @@ This list is from memory, not from an API. Check it before downloading.
 - Spider-Man: Into the Spider-Verse (2018)
 - Spider-Man: Across the Spider-Verse (2023)
 - Big Hero 6 (2014)
-- Werewolf by Night (2022, special)
+- Werewolf by Night (2022)
 - The Guardians of the Galaxy Holiday Special (2022)
 
 **Series**
@@ -93,7 +98,6 @@ This list is from memory, not from an API. Check it before downloading.
 - I Am Groot (2022)
 - Hit-Monkey (2021)
 - M.O.D.O.K. (2021)
-- Agents of S.H.I.E.L.D.: Slingshot (2016, web series)
 - The Avengers: Earth's Mightiest Heroes (2010)
 - Ultimate Spider-Man (2012)
 - Spider-Man: The New Animated Series (2003)

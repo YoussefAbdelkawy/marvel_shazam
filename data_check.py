@@ -61,6 +61,8 @@ def main():
     rng = random.Random(99)
     queries, truth = [], []
     for d in docs:
+        if d["source_file"] not in splits:          # added after the benchmark was frozen
+            continue
         words = d["text"].split()
         a0, b0 = splits[d["source_file"]]["dev"]
         if b0 - a0 < PROBE_LEN:

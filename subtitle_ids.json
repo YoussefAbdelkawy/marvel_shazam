@@ -1,0 +1,1337 @@
+{
+ "movie:Big Hero 6:2014": {
+  "imdb": "tt2245084",
+  "name": "Big Hero 6"
+ },
+ "movie:Captain America II: Death Too Soon:1979": {
+  "imdb": "tt0078938",
+  "name": "Captain America II: Death Too Soon"
+ },
+ "movie:Captain America:1979": {
+  "error": "no Wikidata film with an IMDb id and a matching year"
+ },
+ "movie:Captain America:1990": {
+  "imdb": "tt0103923",
+  "name": "Captain America"
+ },
+ "movie:Dr. Strange:1978": {
+  "imdb": "tt0077469",
+  "name": "Dr. Strange"
+ },
+ "movie:Fantastic Beasts and Where to Find Them:2016": {
+  "imdb": "tt3183660",
+  "name": "Fantastic Beasts and Where to Find Them"
+ },
+ "movie:Fantastic Beasts: The Crimes of Grindelwald:2018": {
+  "imdb": "tt4123430",
+  "name": "Fantastic Beasts: The Crimes of Grindelwald"
+ },
+ "movie:Fantastic Beasts: The Secrets of Dumbledore:2022": {
+  "imdb": "tt4123432",
+  "name": "Fantastic Beasts: The Secrets of Dumbledore"
+ },
+ "movie:Generation X:1996": {
+  "imdb": "tt0116401",
+  "name": "Generation X"
+ },
+ "movie:Harry Potter and the Chamber of Secrets:2002": {
+  "imdb": "tt0295297",
+  "name": "Harry Potter and the Chamber of Secrets"
+ },
+ "movie:Harry Potter and the Deathly Hallows - Part 1:2010": {
+  "imdb": "tt0926084",
+  "name": "Harry Potter and the Deathly Hallows \u2013 Part 1"
+ },
+ "movie:Harry Potter and the Deathly Hallows - Part 2:2011": {
+  "imdb": "tt1201607",
+  "name": "Harry Potter and the Deathly Hallows \u2013 Part 2"
+ },
+ "movie:Harry Potter and the Goblet of Fire:2005": {
+  "imdb": "tt0330373",
+  "name": "Harry Potter and the Goblet of Fire"
+ },
+ "movie:Harry Potter and the Half-Blood Prince:2009": {
+  "imdb": "tt0417741",
+  "name": "Harry Potter and the Half-Blood Prince"
+ },
+ "movie:Harry Potter and the Order of the Phoenix:2007": {
+  "imdb": "tt0373889",
+  "name": "Harry Potter and the Order of the Phoenix"
+ },
+ "movie:Harry Potter and the Philosopher's Stone:2001": {
+  "imdb": "tt0241527",
+  "name": "Harry Potter and the Philosopher's Stone"
+ },
+ "movie:Harry Potter and the Prisoner of Azkaban:2004": {
+  "imdb": "tt0304141",
+  "name": "Harry Potter and the Prisoner of Azkaban"
+ },
+ "movie:Man-Thing:2005": {
+  "imdb": "tt0290747",
+  "name": "Man-Thing"
+ },
+ "movie:Nick Fury: Agent of S.H.I.E.L.D.:1998": {
+  "imdb": "tt0119781",
+  "name": "Nick Fury: Agent of S.H.I.E.L.D."
+ },
+ "movie:Spider-Man: Across the Spider-Verse:2023": {
+  "imdb": "tt9362722",
+  "name": "Spider-Man: Across the Spider-Verse"
+ },
+ "movie:Spider-Man: Into the Spider-Verse:2018": {
+  "imdb": "tt4633694",
+  "name": "Spider-Man: Into the Spider-Verse"
+ },
+ "movie:The Death of the Incredible Hulk:1990": {
+  "imdb": "tt0099387",
+  "name": "The Death of the Incredible Hulk"
+ },
+ "movie:The Fantastic Four:1994": {
+  "imdb": "tt0109770",
+  "name": "The Fantastic Four"
+ },
+ "movie:The Guardians of the Galaxy Holiday Special:2022": {
+  "imdb": "tt13623136",
+  "name": "The Guardians of the Galaxy Holiday Special"
+ },
+ "movie:The Incredible Hulk Returns:1988": {
+  "imdb": "tt0095368",
+  "name": "The Incredible Hulk Returns"
+ },
+ "movie:The Punisher:1989": {
+  "imdb": "tt0098141",
+  "name": "The Punisher"
+ },
+ "movie:The Trial of the Incredible Hulk:1989": {
+  "imdb": "tt0098512",
+  "name": "The Trial of the Incredible Hulk"
+ },
+ "movie:Werewolf by Night:2022": {
+  "imdb": "tt15318872",
+  "name": "Werewolf by Night"
+ },
+ "tv:Daredevil: Born Again:2025": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    2,
+    7
+   ],
+   [
+    2,
+    8
+   ]
+  ],
+  "imdb": "tt18923754",
+  "name": "Daredevil: Born Again",
+  "premiered": "2025-03-04",
+  "tvmaze": 63234
+ },
+ "tv:Eyes of Wakanda:2025": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ]
+  ],
+  "imdb": "tt13968252",
+  "name": "Eyes of Wakanda",
+  "premiered": "2025-08-01",
+  "tvmaze": 73415
+ },
+ "tv:Hit-Monkey:2021": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    1,
+    10
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    2,
+    7
+   ],
+   [
+    2,
+    8
+   ],
+   [
+    2,
+    9
+   ],
+   [
+    2,
+    10
+   ]
+  ],
+  "imdb": "tt9811316",
+  "name": "Marvel's Hit-Monkey",
+  "premiered": "2021-11-17",
+  "tvmaze": 40958
+ },
+ "tv:I Am Groot:2022": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ]
+  ],
+  "imdb": "tt13623148",
+  "name": "I Am Groot",
+  "premiered": "2022-08-10",
+  "tvmaze": 52351
+ },
+ "tv:M.O.D.O.K.:2021": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    1,
+    10
+   ]
+  ],
+  "imdb": "tt9811118",
+  "name": "Marvel's M.O.D.O.K.",
+  "premiered": "2021-05-21",
+  "tvmaze": 40957
+ },
+ "tv:Marvel Zombies:2025": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ]
+  ],
+  "imdb": "tt16027014",
+  "name": "Marvel Zombies",
+  "premiered": "2025-09-24",
+  "tvmaze": 58949
+ },
+ "tv:Spider-Man: The New Animated Series:2003": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    1,
+    10
+   ],
+   [
+    1,
+    11
+   ],
+   [
+    1,
+    12
+   ],
+   [
+    1,
+    13
+   ]
+  ],
+  "imdb": "tt0290983",
+  "name": "Spider-Man",
+  "premiered": "2003-07-11",
+  "tvmaze": 4458
+ },
+ "tv:Spider-Man:1967": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    1,
+    10
+   ],
+   [
+    1,
+    11
+   ],
+   [
+    1,
+    12
+   ],
+   [
+    1,
+    13
+   ],
+   [
+    1,
+    14
+   ],
+   [
+    1,
+    15
+   ],
+   [
+    1,
+    16
+   ],
+   [
+    1,
+    17
+   ],
+   [
+    1,
+    18
+   ],
+   [
+    1,
+    19
+   ],
+   [
+    1,
+    20
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    2,
+    7
+   ],
+   [
+    2,
+    8
+   ],
+   [
+    2,
+    9
+   ],
+   [
+    2,
+    10
+   ],
+   [
+    2,
+    11
+   ],
+   [
+    2,
+    12
+   ],
+   [
+    2,
+    13
+   ],
+   [
+    2,
+    14
+   ],
+   [
+    2,
+    15
+   ],
+   [
+    2,
+    16
+   ],
+   [
+    2,
+    17
+   ],
+   [
+    2,
+    18
+   ],
+   [
+    2,
+    19
+   ],
+   [
+    3,
+    1
+   ],
+   [
+    3,
+    2
+   ],
+   [
+    3,
+    3
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    3,
+    5
+   ],
+   [
+    3,
+    6
+   ],
+   [
+    3,
+    7
+   ],
+   [
+    3,
+    8
+   ],
+   [
+    3,
+    9
+   ],
+   [
+    3,
+    10
+   ],
+   [
+    3,
+    11
+   ],
+   [
+    3,
+    12
+   ],
+   [
+    3,
+    13
+   ]
+  ],
+  "imdb": "tt0061301",
+  "name": "Spider-Man",
+  "premiered": "1967-09-09",
+  "tvmaze": 4107
+ },
+ "tv:The Avengers: Earth's Mightiest Heroes:2010": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    1,
+    10
+   ],
+   [
+    1,
+    11
+   ],
+   [
+    1,
+    12
+   ],
+   [
+    1,
+    13
+   ],
+   [
+    1,
+    14
+   ],
+   [
+    1,
+    15
+   ],
+   [
+    1,
+    16
+   ],
+   [
+    1,
+    17
+   ],
+   [
+    1,
+    18
+   ],
+   [
+    1,
+    19
+   ],
+   [
+    1,
+    20
+   ],
+   [
+    1,
+    21
+   ],
+   [
+    1,
+    22
+   ],
+   [
+    1,
+    23
+   ],
+   [
+    1,
+    24
+   ],
+   [
+    1,
+    25
+   ],
+   [
+    1,
+    26
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    2,
+    7
+   ],
+   [
+    2,
+    8
+   ],
+   [
+    2,
+    9
+   ],
+   [
+    2,
+    10
+   ],
+   [
+    2,
+    11
+   ],
+   [
+    2,
+    12
+   ],
+   [
+    2,
+    13
+   ],
+   [
+    2,
+    14
+   ],
+   [
+    2,
+    15
+   ],
+   [
+    2,
+    16
+   ],
+   [
+    2,
+    17
+   ],
+   [
+    2,
+    18
+   ],
+   [
+    2,
+    19
+   ],
+   [
+    2,
+    20
+   ],
+   [
+    2,
+    21
+   ],
+   [
+    2,
+    22
+   ],
+   [
+    2,
+    23
+   ],
+   [
+    2,
+    24
+   ],
+   [
+    2,
+    25
+   ],
+   [
+    2,
+    26
+   ]
+  ],
+  "imdb": "tt1626038",
+  "name": "The Avengers: Earth's Mightiest Heroes!",
+  "premiered": "2010-09-22",
+  "tvmaze": 671
+ },
+ "tv:Ultimate Spider-Man:2012": {
+  "episodes": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    1,
+    5
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    7
+   ],
+   [
+    1,
+    8
+   ],
+   [
+    1,
+    9
+   ],
+   [
+    1,
+    10
+   ],
+   [
+    1,
+    11
+   ],
+   [
+    1,
+    12
+   ],
+   [
+    1,
+    13
+   ],
+   [
+    1,
+    14
+   ],
+   [
+    1,
+    15
+   ],
+   [
+    1,
+    16
+   ],
+   [
+    1,
+    17
+   ],
+   [
+    1,
+    18
+   ],
+   [
+    1,
+    19
+   ],
+   [
+    1,
+    20
+   ],
+   [
+    1,
+    21
+   ],
+   [
+    1,
+    22
+   ],
+   [
+    1,
+    23
+   ],
+   [
+    1,
+    24
+   ],
+   [
+    1,
+    25
+   ],
+   [
+    1,
+    26
+   ],
+   [
+    2,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    2,
+    5
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    2,
+    7
+   ],
+   [
+    2,
+    8
+   ],
+   [
+    2,
+    9
+   ],
+   [
+    2,
+    10
+   ],
+   [
+    2,
+    11
+   ],
+   [
+    2,
+    12
+   ],
+   [
+    2,
+    13
+   ],
+   [
+    2,
+    14
+   ],
+   [
+    2,
+    15
+   ],
+   [
+    2,
+    16
+   ],
+   [
+    2,
+    17
+   ],
+   [
+    2,
+    18
+   ],
+   [
+    2,
+    19
+   ],
+   [
+    2,
+    20
+   ],
+   [
+    2,
+    21
+   ],
+   [
+    2,
+    22
+   ],
+   [
+    2,
+    23
+   ],
+   [
+    2,
+    24
+   ],
+   [
+    2,
+    25
+   ],
+   [
+    2,
+    26
+   ],
+   [
+    3,
+    1
+   ],
+   [
+    3,
+    2
+   ],
+   [
+    3,
+    3
+   ],
+   [
+    3,
+    4
+   ],
+   [
+    3,
+    5
+   ],
+   [
+    3,
+    6
+   ],
+   [
+    3,
+    7
+   ],
+   [
+    3,
+    8
+   ],
+   [
+    3,
+    9
+   ],
+   [
+    3,
+    10
+   ],
+   [
+    3,
+    11
+   ],
+   [
+    3,
+    12
+   ],
+   [
+    3,
+    13
+   ],
+   [
+    3,
+    14
+   ],
+   [
+    3,
+    15
+   ],
+   [
+    3,
+    16
+   ],
+   [
+    3,
+    17
+   ],
+   [
+    3,
+    18
+   ],
+   [
+    3,
+    19
+   ],
+   [
+    3,
+    20
+   ],
+   [
+    3,
+    21
+   ],
+   [
+    3,
+    22
+   ],
+   [
+    3,
+    23
+   ],
+   [
+    3,
+    24
+   ],
+   [
+    3,
+    25
+   ],
+   [
+    3,
+    26
+   ],
+   [
+    4,
+    1
+   ],
+   [
+    4,
+    2
+   ],
+   [
+    4,
+    3
+   ],
+   [
+    4,
+    4
+   ],
+   [
+    4,
+    5
+   ],
+   [
+    4,
+    6
+   ],
+   [
+    4,
+    7
+   ],
+   [
+    4,
+    8
+   ],
+   [
+    4,
+    9
+   ],
+   [
+    4,
+    10
+   ],
+   [
+    4,
+    11
+   ],
+   [
+    4,
+    12
+   ],
+   [
+    4,
+    13
+   ],
+   [
+    4,
+    14
+   ],
+   [
+    4,
+    15
+   ],
+   [
+    4,
+    16
+   ],
+   [
+    4,
+    17
+   ],
+   [
+    4,
+    18
+   ],
+   [
+    4,
+    19
+   ],
+   [
+    4,
+    20
+   ],
+   [
+    4,
+    21
+   ],
+   [
+    4,
+    22
+   ],
+   [
+    4,
+    23
+   ],
+   [
+    4,
+    24
+   ],
+   [
+    4,
+    25
+   ],
+   [
+    4,
+    26
+   ]
+  ],
+  "imdb": "tt1722512",
+  "name": "Marvel's Ultimate Spider-Man",
+  "premiered": "2012-04-01",
+  "tvmaze": 3114
+ }
+}

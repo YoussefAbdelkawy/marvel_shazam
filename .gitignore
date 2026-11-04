@@ -6,3 +6,7 @@ index_data/
 external/
 models/
 *.bak
+subs_incoming/
+subs_replaced/
+subs_wrong/
+subs_harry_potter/

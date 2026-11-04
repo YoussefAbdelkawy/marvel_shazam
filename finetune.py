@@ -39,8 +39,9 @@ def make_pairs(cfg, per_title, noisy_frac, seed):
     pairs = []
     for d in docs:
         words = d["text"].split()
-        sp = splits[d["source_file"]]
-        spans = train_spans(len(words), sp["dev"], sp["test"])
+        sp = splits.get(d["source_file"])
+        # titles added after the benchmark was frozen have no dev/test blocks: all of it is train
+        spans = train_spans(len(words), sp["dev"], sp["test"]) if sp else [(0, len(words))]
         chunks = []                                          # (a, b, span) fully inside train
         for size, stride in cfg["scales"]:
             for a, b in bi.chunk_words(words, size, stride, cfg["min_chunk_words"]):
