@@ -37,6 +37,8 @@ NAME_CHECK_MIN_NAMES = 6        # only judge shows with at least this many known
 
 # ------------------------------------------------------------------ text
 TAGS = re.compile(r"<[^>]+>|\{[^}]*\}|\[[^\]]*\]|\([A-Z ,'\-]{3,}\)|[♪♫]+")
+# provider ads / credits injected as subtitle lines (Wyzie's free plan adds one to every file)
+AD_RE = re.compile(r"wyzie|subdl|opensubtitles|free plan|ad-free|www\.|https?://|\.(?:com|org|net|io)\b", re.I)
 
 
 def srt_to_text(srt):
@@ -46,10 +48,10 @@ def srt_to_text(srt):
         line = line.strip()
         if not line or line.isdigit() or "-->" in line:
             continue
-        line = TAGS.sub("", line)
+        line = TAGS.sub("", line).replace("�", "")      # U+FFFD: broken chars in the upload
         line = re.sub(r"^[A-Z][A-Z .'\-]{1,20}:\s*", "", line)
         line = line.lstrip("- ").strip()
-        if line and "opensubtitles" not in line.lower():
+        if line and not AD_RE.search(line):
             out.append(line)
     return " ".join(out)
 
@@ -337,7 +339,27 @@ class OpenSubtitles:
 ALL_PROVIDERS = [Wyzie, SubDL, OpenSubtitles]
 
 
+def load_saved_keys():
+    """`setx` only reaches windows opened afterwards. On Windows, also read the keys it saved
+    (HKCU\\Environment), so the scripts work in the same window right after setx."""
+    if os.name != "nt":
+        return
+    try:
+        import winreg
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
+            for cls in ALL_PROVIDERS:
+                for name in cls.env:
+                    if not os.environ.get(name):
+                        try:
+                            os.environ[name] = winreg.QueryValueEx(k, name)[0]
+                        except FileNotFoundError:
+                            pass
+    except OSError:
+        pass
+
+
 def configured_providers(only=None):
+    load_saved_keys()
     out, skipped = [], []
     for cls in ALL_PROVIDERS:
         if only and cls.name not in only:

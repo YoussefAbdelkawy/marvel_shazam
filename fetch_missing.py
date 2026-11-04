@@ -73,7 +73,10 @@ def build_targets(new=True, full_seasons=False, ids=None):
 
 def install():
     state_p = INCOMING / "_progress.json"
-    state = json.loads(state_p.read_text()) if state_p.exists() else {}
+    if not state_p.exists():
+        print("Nothing to install yet: run  python fetch_missing.py  first (downloads go to subs_incoming/).")
+        return
+    state = json.loads(state_p.read_text())
     status_p = ROOT / "status.json"
     status = json.loads(status_p.read_text())
     moved = Counter()
