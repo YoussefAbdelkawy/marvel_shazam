@@ -1,0 +1,278 @@
+{
+ "split": "dev",
+ "config": "C:\\Users\\yusef\\PycharmProjects\\marvel_shazam\\config.json",
+ "index": "models-bge-small-marvel-ft-v2__30-15_60-30",
+ "search": {
+  "k": 20,
+  "scoring": "exp",
+  "temperature": 0.2,
+  "confidence": "calibrated",
+  "threshold": 0.1682795612619612,
+  "hybrid": true,
+  "dense_depth": 50,
+  "bm25_depth": 50,
+  "rrf_k": 60,
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "bm25_epsilon": 0.25,
+  "rerank": true,
+  "rerank_model": "BAAI/bge-reranker-base",
+  "rerank_depth": 20,
+  "rerank_max_length": 128,
+  "background": false,
+  "calibrator": {
+   "features": [
+    "bm25_per_word",
+    "len_mid",
+    "len_short",
+    "log_words",
+    "margin",
+    "n_titles",
+    "overlap2",
+    "rerank_top",
+    "share",
+    "sim_gap",
+    "sim_z",
+    "top_score",
+    "top_sim"
+   ],
+   "mean": [
+    3.28270033350951,
+    0.33541666666666664,
+    0.33166666666666667,
+    2.8980709346876785,
+    0.6496563892436533,
+    0.6363541666666663,
+    0.5833035394806617,
+    0.7855267392442693,
+    0.7250227462125299,
+    0.27302630816803597,
+    4.336958054573646,
+    0.7793427420382553,
+    0.6174214794486761
+   ],
+   "scale": [
+    1.1959932973570542,
+    0.4721359204012698,
+    0.4708119474169172,
+    0.603792154335181,
+    0.39165644612005296,
+    0.15845030729813364,
+    0.34134337693911343,
+    0.3553189635050152,
+    0.3240103760762176,
+    0.20353967352725874,
+    3.426761789771657,
+    0.36670253116506424,
+    0.2120560761258006
+   ],
+   "coef": [
+    0.6253673158335235,
+    -0.925462296745616,
+    -1.231755928488597,
+    -1.4614143335638443,
+    2.4957603530839334,
+    0.24700609033018453,
+    1.9873466121718721,
+    0.04478659004698618,
+    0.12330055104988209,
+    0.2640394871270504,
+    0.6551218160731798,
+    -0.10238431118823065,
+    0.5746739124735083
+   ],
+   "intercept": 2.755609045571923
+  },
+  "threshold_by_length": {
+   "short": 0.16896977877319608,
+   "mid": 0.13395112956703187,
+   "long": 0.20618543446494614
+  }
+ },
+ "seconds": 190.11844205856323,
+ "metrics": {
+  "overall": {
+   "n": 1800,
+   "top1": 0.95,
+   "top5": 0.9961111111111111,
+   "mrr": 0.9738666426166426
+  },
+  "by_length_noise": {
+   "10w_clean": {
+    "n": 300,
+    "top1": 0.9766666666666667,
+    "top5": 1.0,
+    "mrr": 0.9883333333333333
+   },
+   "10w_noisy": {
+    "n": 300,
+    "top1": 0.89,
+    "top5": 0.9766666666666667,
+    "mrr": 0.9348665223665223
+   },
+   "20w_clean": {
+    "n": 300,
+    "top1": 0.9633333333333334,
+    "top5": 1.0,
+    "mrr": 0.9816666666666667
+   },
+   "20w_noisy": {
+    "n": 300,
+    "top1": 0.9566666666666667,
+    "top5": 1.0,
+    "mrr": 0.9783333333333334
+   },
+   "40w_clean": {
+    "n": 300,
+    "top1": 0.96,
+    "top5": 1.0,
+    "mrr": 0.98
+   },
+   "40w_noisy": {
+    "n": 300,
+    "top1": 0.9533333333333334,
+    "top5": 1.0,
+    "mrr": 0.98
+   }
+  },
+  "by_length": {
+   "10w": {
+    "n": 600,
+    "top1": 0.9333333333333333,
+    "top5": 0.9883333333333333,
+    "mrr": 0.9615999278499279
+   },
+   "20w": {
+    "n": 600,
+    "top1": 0.96,
+    "top5": 1.0,
+    "mrr": 0.98
+   },
+   "40w": {
+    "n": 600,
+    "top1": 0.9566666666666667,
+    "top5": 1.0,
+    "mrr": 0.98
+   }
+  },
+  "clean": {
+   "n": 900,
+   "top1": 0.9666666666666667,
+   "top5": 1.0,
+   "mrr": 0.9833333333333333
+  },
+  "noisy": {
+   "n": 900,
+   "top1": 0.9333333333333333,
+   "top5": 0.9922222222222222,
+   "mrr": 0.9643999518999519
+  },
+  "neg_rejection": 0.9716666666666667,
+  "pos_false_reject": 0.015555555555555555,
+  "top1_raw": 0.9522222222222222,
+  "neg_false_accept": 0.02833333333333332,
+  "score": 0.9191666666666667
+ },
+ "worst_titles": [
+  {
+   "true_title": "Spider Man (1978) S01E06",
+   "n": 4,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Daredevil (2015) S01E06",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Jessica Jones (2015) S03E11",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Spider Man (1978) S01E08",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Spider Man (1978) S01E15",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Spider Man (1978) S01E17",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Spider Man (1978) S01E18",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Spider Man (1978) S01E19",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "The Incredible Hulk (1977) S02E20",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Ultimate Spider Man (2012) S02E25",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Ultimate Spider Man (2012) S03E09",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Ultimate Spider Man (2012) S03E14",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Ultimate Spider Man (2012) S03E18",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "Ultimate Spider Man (2012) S03E22",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "X Men The Animated Series (1992) S02E01",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "X Men The Animated Series (1992) S04E14",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "X Men The Animated Series (1992) S05E04",
+   "n": 2,
+   "top1": 0.0
+  },
+  {
+   "true_title": "The Incredible Hulk (1977) S02E11",
+   "n": 4,
+   "top1": 0.25
+  },
+  {
+   "true_title": "Agatha All Along (2024) S01E02",
+   "n": 4,
+   "top1": 0.5
+  },
+  {
+   "true_title": "Daredevil (2015) S02E06",
+   "n": 4,
+   "top1": 0.5
+  }
+ ]
+}

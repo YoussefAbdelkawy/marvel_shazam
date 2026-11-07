@@ -1,12 +1,30 @@
+# --- environment / IDE ---
 .venv/
 .idea/
 __pycache__/
+*.bak
+*.bundle
+
+# --- models and built indexes (large, rebuildable) ---
 bge-small-en-v1.5/
+models/
 index_data/
 external/
-models/
-*.bak
-subs_incoming/
-subs_replaced/
-subs_wrong/
-subs_harry_potter/
+
+# --- copyrighted text: subtitles and anything that quotes them ---
+# Subtitle files are not ours to publish. Rebuild them with fetch_missing.py.
+subs/
+subs_*/
+# Benchmark queries and per-query results contain subtitle lines.
+# Summaries (eval/summary_*.json, eval_stream/summary_*.json) and splits.json stay public.
+eval/*.parquet
+eval/results_*.csv
+eval_stream/dev.json
+eval_stream/test.json
+eval_v1/
+eval_stream_v1/
+# Movie audio used for the fake-mic demo
+app/test_audio/
+
+# --- local copies ---
+RESULTS_v1.md

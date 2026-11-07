@@ -141,7 +141,7 @@ CREDIT_PATTERNS = [
 ]
 CREDIT_RE = re.compile("|".join(CREDIT_PATTERNS), re.I)
 SOUND_TAG_RE = re.compile(r"\[[^\]]*\]|\([^)]*\)|\{[^}]*\}|<[^>]+>")
-MUSIC_RE = re.compile(r"[♪♫#][^♪♫#]*[♪♫#]|[♪♫]")
+MUSIC_RE = re.compile(r"[♪♫][^♪♫]*[♪♫]|#(?!\d)[^#\n]{0,300}#|[♪♫]")  # "#" pairs only as music on one line, never "#2"
 SPEAKER_RE = re.compile(r"(?:(?<=^)|(?<=[\s.!?\"]))[A-Z][A-Z0-9 .'\-]{1,24}:(?=\s)")
 EP_CODE_RE = re.compile(r"\bS\d{1,2}E\d{1,3}\b")
 PREVIOUSLY_RE = re.compile(
